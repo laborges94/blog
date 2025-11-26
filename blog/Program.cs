@@ -5,7 +5,8 @@ using Microsoft.Data.SqlClient;
 internal class Program
 {
     private const string ConnectionString =
-    "Server=(localdb)\\MSSQLLocalDB;Database=Blog;Integrated Security=true;";
+    "Server=localhost\\SQLEXPRESS;Database=Blog;Integrated Security=true;TrustServerCertificate=True;";
+    //"Data Source=.\\SQLEXPRESS;Initial Catalog=Blog;Integrated Security=True;";
 
     private static void Main(string[] args)
     {
@@ -23,4 +24,3 @@ internal class Program
             Console.WriteLine($"{u.Id} - {u.Name} - {u.Email}");
     }
 }
-

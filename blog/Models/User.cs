@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Dapper.Contrib.Extensions;
 
 namespace blog.Models
 {
+    [Table("[User]")]
     public class User
     {
         public int Id { get; set; }
