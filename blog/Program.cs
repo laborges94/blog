@@ -1,5 +1,5 @@
-﻿using blog.Models;
-using Dapper.Contrib.Extensions;
+﻿using Blog.Models;
+using Blog.Repositories;
 using Microsoft.Data.SqlClient;
 
 internal class Program
@@ -10,17 +10,69 @@ internal class Program
 
     private static void Main(string[] args)
     {
-        Console.WriteLine("Hello, World!");
-        ReadUsers();
+        var connection = new SqlConnection(ConnectionString);
+        connection.Open();
+
+        ReadUsers(connection);
+
+        connection.Close();
     }
 
-    public static void ReadUsers()
+    public static void ReadUsers(SqlConnection connection)
     {
-        using var connection = new SqlConnection(ConnectionString);
+        var UserRepository = new UserRepository(connection);
+        var users = UserRepository.GetAllUsers();
+        foreach (var user in users)
+        {
+            Console.WriteLine($"{user.Id} - {user.Name} - {user.Email}");
+        }
+    }
 
-        var user = connection.GetAll<User>();
+    public static void ReadUser(SqlConnection connection)
+    {
+        var UserRepository = new UserRepository(connection);
+        var user = UserRepository.GetUserById(1);
+        Console.WriteLine($"{user.Id} - {user.Name} - {user.Email}");
+    }
 
-        foreach (var u in user)
-            Console.WriteLine($"{u.Id} - {u.Name} - {u.Email}");
+    public static void CreateUser(SqlConnection connection)
+    {
+        var user = new User
+        {
+            Name = "Leandro Silva",
+            Email = "leandro@example.com",
+            PasswordHash = "hashedpassword",
+            Bio = "Developer",
+            Image = "https://example.com/image.jpg",
+            Slug = "leandro-silva"
+        };
+
+        var UserRepository = new UserRepository(connection);
+
+        UserRepository.CreateUser(user);
+
+        Console.WriteLine($"User created.");
+    }
+
+    public static void UpdateUser(SqlConnection connection)
+    {
+        var UserRepository = new UserRepository(connection);
+
+        var user = UserRepository.GetUserById(1);
+        user.Name = "Zé da Silva";
+
+        UserRepository.UpdateUser(user);
+
+        Console.WriteLine($"User updated.");
+    }
+
+    public static void DeleteUser(SqlConnection connection)
+    {
+        var UserRepository = new UserRepository(connection);
+
+        var user = UserRepository.GetUserById(1);
+        UserRepository.DeleteUser(user.Id);
+
+        Console.WriteLine($"User deleted.");
     }
 }
