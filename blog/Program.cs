@@ -13,66 +13,8 @@ internal class Program
         var connection = new SqlConnection(ConnectionString);
         connection.Open();
 
-        ReadUsers(connection);
-
         connection.Close();
-    }
 
-    public static void ReadUsers(SqlConnection connection)
-    {
-        var UserRepository = new UserRepository(connection);
-        var users = UserRepository.GetAllUsers();
-        foreach (var user in users)
-        {
-            Console.WriteLine($"{user.Id} - {user.Name} - {user.Email}");
-        }
-    }
-
-    public static void ReadUser(SqlConnection connection)
-    {
-        var UserRepository = new UserRepository(connection);
-        var user = UserRepository.GetUserById(1);
-        Console.WriteLine($"{user.Id} - {user.Name} - {user.Email}");
-    }
-
-    public static void CreateUser(SqlConnection connection)
-    {
-        var user = new User
-        {
-            Name = "Leandro Silva",
-            Email = "leandro@example.com",
-            PasswordHash = "hashedpassword",
-            Bio = "Developer",
-            Image = "https://example.com/image.jpg",
-            Slug = "leandro-silva"
-        };
-
-        var UserRepository = new UserRepository(connection);
-
-        UserRepository.CreateUser(user);
-
-        Console.WriteLine($"User created.");
-    }
-
-    public static void UpdateUser(SqlConnection connection)
-    {
-        var UserRepository = new UserRepository(connection);
-
-        var user = UserRepository.GetUserById(1);
-        user.Name = "Zé da Silva";
-
-        UserRepository.UpdateUser(user);
-
-        Console.WriteLine($"User updated.");
-    }
-
-    public static void DeleteUser(SqlConnection connection)
-    {
-        var UserRepository = new UserRepository(connection);
-
-        var user = UserRepository.GetUserById(1);
-        UserRepository.DeleteUser(user.Id);
-
-        Console.WriteLine($"User deleted.");
+        Console.ReadKey();
     }
 }
