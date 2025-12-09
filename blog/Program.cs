@@ -1,5 +1,4 @@
-﻿using Blog.Models;
-using Blog.Repositories;
+﻿using Blog;
 using Microsoft.Data.SqlClient;
 
 internal class Program
@@ -10,11 +9,19 @@ internal class Program
 
     private static void Main(string[] args)
     {
-        var connection = new SqlConnection(ConnectionString);
-        connection.Open();
+        Database.Connection = new SqlConnection(ConnectionString);
 
-        connection.Close();
+        Database.Connection.Open();
+
+        Load();
+
+        Database.Connection.Close();
 
         Console.ReadKey();
+    }
+
+    static void Load()
+    {
+        Console.Clear();
     }
 }

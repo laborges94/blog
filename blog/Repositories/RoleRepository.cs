@@ -4,22 +4,19 @@ using Microsoft.Data.SqlClient;
 
 namespace Blog.Repositories;
 
-public class RoleRepository(SqlConnection connection)
+public class RoleRepository()
 {
-    private readonly SqlConnection _connection = connection;
+    public IEnumerable<Role> GetAllRoles() => Database.Connection.GetAll<Role>();
 
-    public IEnumerable<Role> GetAllRoles() => _connection.GetAll<Role>();
+    public Role GetRoleById(int id) => Database.Connection.Get<Role>(id);
 
-    public Role GetRoleById(int id) => _connection.Get<Role>(id);
-
-    public void CreateRole(Role role) => _connection.Insert(role);
-
-    public void UpdateRole(Role role) => _connection.Update(role);
+    public void CreateRole(Role role) => Database.Connection.Insert(role);
+    public void UpdateRole(Role role) => Database.Connection.Update(role);
 
     public void DeleteRole(int id)
     {
-        var role = _connection.Get<Role>(id);
+        var role = Database.Connection.Get<Role>(id);
         if (role != null)
-            _connection.Delete(role);
+            Database.Connection.Delete(role);
     }
 }

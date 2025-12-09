@@ -4,7 +4,7 @@ using Microsoft.Data.SqlClient;
 
 namespace Blog.Repositories;
 
-public class UserRepository(SqlConnection connection) : Repository<User>(connection)
+public class UserRepository() : Repository<User>()
 {
     public List<User> GetWithRoles()
     {
@@ -16,7 +16,7 @@ public class UserRepository(SqlConnection connection) : Repository<User>(connect
 
         var userDict = new Dictionary<int, User>();
 
-        var users = _connection.Query<User, Role, User>(
+        var users = Database.Connection.Query<User, Role, User>(
             sql,
             (user, role) =>
             {

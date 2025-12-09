@@ -3,17 +3,14 @@ using Microsoft.Data.SqlClient;
 
 namespace Blog.Repositories;
 
-public abstract class Repository<T>(SqlConnection connection) where T : class
-{
-    protected readonly SqlConnection _connection = connection;
+public class Repository<T> where T : class
+{    
+    public IEnumerable<T> GetAll() => Database.Connection.GetAll<T>();
 
-    protected IEnumerable<T> GetAll() => _connection.GetAll<T>();
+    public T? GetById(int id) => Database.Connection.Get<T>(id);
 
-    protected T? GetById(int id) => _connection.Get<T>(id);
+    public long Insert(T entity) => Database.Connection.Insert(entity);
+    public bool Update(T entity) => Database.Connection.Update(entity);
 
-    protected long Insert(T entity) => _connection.Insert(entity);
-
-    protected bool Update(T entity) => _connection.Update(entity);
-
-    protected bool Delete(T entity) => _connection.Delete(entity);
+    public bool Delete(T entity) => Database.Connection.Delete(entity);
 }
